@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.96.1 -->
+<interface>
+  <!-- interface-name main_window.ui -->
+  <requires lib="gio" version="2.0"/>
+  <requires lib="gtk" version="4.10"/>
+  <object class="GtkWindow" id="MainWindow">
+    <property name="child">
+      <object class="GtkGrid">
+        <child>
+          <object class="GtkColumnView" id="main_">
+            <child>
+              <object class="GtkColumnViewColumn">
+                <property name="title">Name</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkColumnViewColumn">
+                <property name="title">Type</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkColumnViewColumn">
+                <property name="title">Release Date</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkColumnViewColumn">
+                <property name="title">Releases In</property>
+              </object>
+            </child>
+            <layout>
+              <property name="column">0</property>
+              <property name="row">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mw_add_item_button">
+            <property name="child">
+              <object class="GtkBox">
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">list-add-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">add item</property>
+                  </object>
+                </child>
+              </object>
+            </property>
+            <property name="halign">end</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="row">2</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="GtkPopoverMenuBar">
+            <property name="menu-model">
+              <menu>
+                <submenu>
+                  <attribute name="label">file</attribute>
+                  <section>
+                    <item>
+                      <attribute name="label">new item</attribute>
+                    </item>
+                  </section>
+                </submenu>
+                <submenu>
+                  <attribute name="label">options</attribute>
+                  <section>
+                    <item>
+                      <attribute name="label">minimize to status bar</attribute>
+                    </item>
+                  </section>
+                </submenu>
+              </menu>
+            </property>
+            <layout>
+              <property name="column">0</property>
+              <property name="column-span">1</property>
+              <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </property>
+    <property name="title">Pupes releases tracker</property>
+  </object>
+</interface>
