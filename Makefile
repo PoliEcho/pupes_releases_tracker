@@ -11,19 +11,22 @@ BIN_PATH := build/bin
 DYNAMIC_SRC_PATH := build/src
 BIN_NAME = pupes_releases_tracker
 
-# Detect build type
 ifeq ($(filter debug asan,$(MAKECMDGOALS)),)
-  BUILD_TYPE = release
+BUILD_TYPE = release
 else
-  BUILD_TYPE = debug
+BUILD_TYPE = debug
 endif
 
 SRC_FILES := $(shell find $(SRC_PATH) -name '*.cpp')
 OBJ_FILES := $(patsubst $(SRC_PATH)/%.cpp,$(OBJ_PATH)/%.o,$(SRC_FILES))
 
-# Conditionally include UI object for release builds
+RESOURCE_FILES := resources/ui/main_window.ui resources/ui/add_item_window.ui
+
+RESOURCE_CPP_FILES := $(patsubst resources/ui/%.ui,$(DYNAMIC_SRC_PATH)/%_ui.cpp,$(RESOURCE_FILES))
+RESOURCE_OBJ_FILES := $(patsubst resources/ui/%.ui,$(OBJ_PATH)/%_ui.o,$(RESOURCE_FILES))
+
 ifeq ($(BUILD_TYPE),release)
-  OBJ_FILES += $(OBJ_PATH)/main_window_ui.o
+OBJ_FILES += $(RESOURCE_OBJ_FILES)
 endif
 
 all: make-build-dir make-dynamic-src $(BIN_PATH)/$(BIN_NAME)
@@ -39,15 +42,18 @@ make-build-dir:
 	mkdir -p $(BIN_PATH)
 	mkdir -p $(DYNAMIC_SRC_PATH)
 
-# Conditional UI resource handling
 ifeq ($(BUILD_TYPE),release)
-make-dynamic-src: resources/ui/main_window.ui
-	@echo "[RELEASE] Embedding UI resources"
-	xxd -i resources/ui/main_window.ui | head -n -1 | tr '\n' ' ' | sed 's/ };/, 0x00 };/' > $(DYNAMIC_SRC_PATH)/main_window_ui.cpp
-	$(CPPC) $(CPPC_FLAGS) $(DYNAMIC_SRC_PATH)/main_window_ui.cpp -c -o $(OBJ_PATH)/main_window_ui.o
+make-dynamic-src: $(RESOURCE_CPP_FILES)
+	
+$(DYNAMIC_SRC_PATH)/%_ui.cpp: resources/ui/%.ui
+	xxd -i $< | head -n -1 | tr '\n' ' ' | sed 's/ };/, 0x00 };/' > $@
+
+$(OBJ_PATH)/%_ui.o: $(DYNAMIC_SRC_PATH)/%_ui.cpp
+	$(CPPC) $(CPPC_FLAGS) -c $< -o $@
+
 else
 make-dynamic-src:
-	@echo "[DEBUG] Skipping UI resource embedding"
+	@echo "Skiped resource embedding"
 endif
 
 $(BIN_PATH)/$(BIN_NAME): $(OBJ_FILES)
