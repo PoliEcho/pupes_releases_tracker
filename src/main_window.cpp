@@ -3,6 +3,17 @@
 #include "main.hpp"
 #include <gtkmm.h>
 #include <iostream>
+
+#ifdef RELEASE
+#include "dynamic_src.hpp"
+#endif
+
+#define CONNECT_SIGNAL(Builder, T, what, signal, where)                        \
+  {                                                                            \
+    T *widget = Builder->get_widget<T>(what);                                  \
+    widget->signal().connect([]() { where(); });                               \
+  }
+
 namespace MainWindow {
 Gtk::Window *MainWindow = nullptr;
 
@@ -11,11 +22,20 @@ void on_button_clicked() {
     MainWindow->set_visible(false); // will cause app to terminate
 }
 
+constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder) {
+  CONNECT_SIGNAL(Builder, Gtk::Button, "mw_add_item_button", signal_clicked,
+                 on_button_clicked)
+}
+
 void on_app_activate() {
   // Load the GtkBuilder file and instantiate its widgets:
   Glib::RefPtr<Gtk::Builder> Builder = Gtk::Builder::create();
   try {
+#ifndef RELEASE
     Builder->add_from_file("resources/ui/main_window.ui");
+#else
+    Builder->add_from_string((char *)resources_ui_main_window_ui);
+#endif
   } catch (const Glib::FileError &ex) {
     std::cerr << "FileError: " << ex.what() << std::endl;
     return;
@@ -32,9 +52,7 @@ void on_app_activate() {
     std::cerr << "Could not get the dialog" << std::endl;
     return;
   };
-  Gtk::Button *add_item_Button =
-      Builder->get_widget<Gtk::Button>("mw_add_item_button");
-  add_item_Button->signal_clicked().connect([]() { on_button_clicked(); });
+  connect_signals(Builder);
 
   MainWindow->signal_hide().connect([]() { delete MainWindow; });
 
