@@ -1,0 +1,16 @@
+<property name="menu-model">
+                              <menu>
+                                <item>
+                                  <attribute name="label">Movie</attribute>
+                                </item>
+                                <item>
+                                  <attribute name="label">TV show</attribute>
+                                </item>
+                                <item>
+                                  <attribute name="label">Game</attribute>
+                                </item>
+                                <item>
+                                  <attribute name="label">Book</attribute>
+                                </item>
+                              </menu>
+                            </property>

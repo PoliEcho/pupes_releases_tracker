@@ -1,6 +1,3 @@
-#include "main_window.hpp"
-#include "add_item_dialog.hpp"
-#include "gtkmm/button.h"
 #include "macros.hpp"
 #include "main.hpp"
 #include <gtkmm.h>
@@ -10,19 +7,16 @@
 #include "dynamic_src.hpp"
 #endif
 
-namespace MainWindow {
-Gtk::Window *MainWindow = nullptr;
+namespace AddItemDialog {
+Gtk::Window *AddItemDialogWindow;
 
-constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder) {
-  CONNECT_SIGNAL(Builder, Gtk::Button, "mw_add_item_button", signal_clicked,
-                 AddItemDialog::window_start)
-}
+constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder) {}
 
-void on_app_activate() {
+void window_start() {
   Glib::RefPtr<Gtk::Builder> Builder = Gtk::Builder::create();
   try {
 #ifndef RELEASE
-    Builder->add_from_file("resources/ui/main_window.ui");
+    Builder->add_from_file("resources/ui/add_item_window.ui");
 #else
     Builder->add_from_string((char *)resources_ui_main_window_ui);
 #endif
@@ -37,16 +31,17 @@ void on_app_activate() {
     return;
   }
 
-  MainWindow = Builder->get_widget<Gtk::Window>("MainWindow");
-  if (!MainWindow) {
+  AddItemDialogWindow = Builder->get_widget<Gtk::Window>("AddItemDialogWindow");
+  if (!AddItemDialogWindow) {
     std::cerr << "Could not get the dialog" << std::endl;
     return;
   };
   connect_signals(Builder);
 
-  MainWindow->signal_hide().connect([]() { delete MainWindow; });
+  AddItemDialogWindow->signal_hide().connect(
+      []() { delete AddItemDialogWindow; });
 
-  app->add_window(*MainWindow);
-  MainWindow->set_visible(true);
+  app->add_window(*AddItemDialogWindow);
+  AddItemDialogWindow->set_visible(true);
 }
-} // namespace MainWindow
+} // namespace AddItemDialog

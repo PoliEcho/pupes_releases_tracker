@@ -5,7 +5,7 @@
 Glib::RefPtr<Gtk::Application> app;
 
 int main(int argc, char **argv) {
-  app = Gtk::Application::create("org.gtkmm.example");
+  app = Gtk::Application::create("org.pupes.releases-tracker");
 
   app->signal_activate().connect([]() { MainWindow::on_app_activate(); });
 
