@@ -60,6 +60,13 @@
         </child>
         <child>
           <object class="GtkPopoverMenuBar">
+            <child>
+              <menu/>
+            </child>
+            <child>
+              <menu/>
+            </child>
+            <!-- Custom object fragments -->
             <property name="menu-model">
               <menu>
                 <submenu>
