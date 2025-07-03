@@ -6,12 +6,12 @@
 > small memory and cpu footprint  
 > ease of use  
 ## Roadmap
-> design UI [x]  
-> data input posible [x]  
-> automatic update of Release In [ ]  
-> load data from disk [ ]  
-> minimize to systray [ ]  
-> notifications [ ]  
+> - [x] design UI   
+> - [x] data input posible   
+> - [ ] automatic update of Release In  
+> - [ ] load data from disk   
+> - [ ] minimize to systray   
+> - [ ] notifications   
 
 
 ## QaA
