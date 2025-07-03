@@ -53,7 +53,7 @@ void inicialize_column_view(Gtk::ColumnView *column_view) {
               label->set_text(row_data->type);
               break;
             case 2:
-              label->set_text(row_data->release_date);
+              label->set_text(row_data->release_date_text);
               break;
             case 3:
               label->set_text(row_data->releases_in);
@@ -97,13 +97,14 @@ void on_app_activate() {
     std::cerr << "Could not get the dialog" << std::endl;
     return;
   };
-  connect_signals(Builder);
-
-  MainWindow->signal_hide().connect([]() { delete MainWindow; });
 
   Gtk::ColumnView *mw_column_view =
       Builder->get_widget<Gtk::ColumnView>("mw_column_view");
   inicialize_column_view(mw_column_view);
+
+  connect_signals(Builder);
+
+  MainWindow->signal_hide().connect([]() { delete MainWindow; });
 
   // column_view_list_store->append(
   //  RowData::create("star trek", "TV show", "17 july", "15 days"));

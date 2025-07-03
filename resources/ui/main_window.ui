@@ -11,34 +11,6 @@
         <property name="margin-end">5</property>
         <property name="margin-start">5</property>
         <child>
-          <object class="GtkColumnView" id="mw_column_view">
-            <child>
-              <object class="GtkColumnViewColumn">
-                <property name="title">Name</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkColumnViewColumn">
-                <property name="title">Type</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkColumnViewColumn">
-                <property name="title">Release Date</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkColumnViewColumn">
-                <property name="title">Releases In</property>
-              </object>
-            </child>
-            <layout>
-              <property name="column">0</property>
-              <property name="row">1</property>
-            </layout>
-          </object>
-        </child>
-        <child>
           <object class="GtkButton" id="mw_add_item_button">
             <property name="child">
               <object class="GtkBox">
@@ -98,6 +70,42 @@
               <property name="column">0</property>
               <property name="column-span">1</property>
               <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="hscrollbar-policy">never</property>
+            <property name="min-content-height">200</property>
+            <child>
+              <object class="GtkColumnView" id="mw_column_view">
+                <child>
+                  <object class="GtkColumnViewColumn">
+                    <property name="title">Name</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkColumnViewColumn">
+                    <property name="title">Type</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkColumnViewColumn">
+                    <property name="title">Release Date</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkColumnViewColumn">
+                    <property name="title">Releases In</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <layout>
+              <property name="column">0</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
               <property name="row-span">1</property>
             </layout>
           </object>

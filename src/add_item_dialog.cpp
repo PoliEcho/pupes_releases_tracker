@@ -1,11 +1,17 @@
+#include "glibmm/datetime.h"
+#include "glibmm/ustring.h"
 #include "gtkmm/button.h"
+#include "gtkmm/calendar.h"
 #include "gtkmm/checkbutton.h"
 #include "gtkmm/columnview.h"
 #include "gtkmm/entry.h"
 #include "gtkmm/spinbutton.h"
+#include "gtkmm/switch.h"
 #include "gtkmm/window.h"
 #include "macros.hpp"
 #include "main.hpp"
+#include "main_window.hpp"
+#include "types.hpp"
 #include <gtkmm.h>
 #include <iostream>
 
@@ -30,6 +36,29 @@ void check_specific_time_checkbox(const Glib::RefPtr<Gtk::Builder> &Builder) {
 
 void submit_data(const Glib::RefPtr<Gtk::Builder> &Builder) {
   Gtk::Entry *title_entry = Builder->get_widget<Gtk::Entry>("ai_title_entry");
+  Gtk::Entry *type_entry = Builder->get_widget<Gtk::Entry>("ai_type_entry");
+  Gtk::Switch *notif_switch =
+      Builder->get_widget<Gtk::Switch>("ai_get_notif_switch");
+  Gtk::Calendar *calendar_widget =
+      Builder->get_widget<Gtk::Calendar>("ai_calendar");
+  Glib::DateTime release_dateTime = calendar_widget->get_date();
+
+  Gtk::CheckButton *specific_time_checkbox =
+      Builder->get_widget<Gtk::CheckButton>("ai_specific_time_checkbox");
+
+  const bool specific_time_is_set = specific_time_checkbox->get_active();
+  if (specific_time_is_set) {
+    Gtk::SpinButton *hours_spin_button =
+        Builder->get_widget<Gtk::SpinButton>("ai_time_hour_spin");
+    Gtk::SpinButton *minutes_spin_button =
+        Builder->get_widget<Gtk::SpinButton>("ai_time_minute_spin");
+    release_dateTime =
+        release_dateTime.add_hours(hours_spin_button->get_value())
+            .add_minutes(minutes_spin_button->get_value());
+  }
+  MainWindow::column_view_list_store->append(RowData::create(
+      title_entry->get_text(), type_entry->get_text(), release_dateTime,
+      specific_time_is_set, notif_switch->get_state()));
 }
 
 constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder,
