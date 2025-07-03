@@ -42,6 +42,13 @@ void submit_data(const Glib::RefPtr<Gtk::Builder> &Builder) {
   Gtk::Calendar *calendar_widget =
       Builder->get_widget<Gtk::Calendar>("ai_calendar");
   Glib::DateTime release_dateTime = calendar_widget->get_date();
+  release_dateTime = release_dateTime.add_full(
+      0, 0, 0, -release_dateTime.get_hour(), -release_dateTime.get_minute(),
+      -static_cast<double>(
+          static_cast<double>(release_dateTime.get_second()) +
+          (static_cast<double>(release_dateTime.get_microsecond()) /
+           1000000.0)));
+  std::clog << release_dateTime.format_iso8601() << "\n";
 
   Gtk::CheckButton *specific_time_checkbox =
       Builder->get_widget<Gtk::CheckButton>("ai_specific_time_checkbox");

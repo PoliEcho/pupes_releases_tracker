@@ -40,8 +40,32 @@ private:
     } else {
       if (time_to_release_microseconds < 86400000000) {
         if (specific_time_is_set) {
-          releases_in = Glib::ustring::sprintf(
-              "%d hours", time_to_release_microseconds / 3600000000);
+          double hours =
+              static_cast<double>(time_to_release_microseconds) / 3600000000;
+          if (static_cast<uint8_t>(hours) >= 1) {
+            const std::array<Glib::ustring, 2> hour_strings{"hour", "hours"};
+            uint8_t offset = 0;
+            if (hours > 1) {
+              offset++;
+            }
+            releases_in = Glib::ustring::sprintf(
+                "%d %s", static_cast<uint8_t>(hours), hour_strings[offset]);
+          } else {
+            double minutes = hours * 60;
+            if (minutes < 1) {
+              releases_in = "released!";
+            } else {
+              const std::array<Glib::ustring, 2> minute_strings{"minute",
+                                                                "minutes"};
+              uint8_t offset = 0;
+              if (static_cast<uint8_t>(minutes) > 1) {
+                offset++;
+              }
+              releases_in =
+                  Glib::ustring::sprintf("%d %s", static_cast<uint8_t>(minutes),
+                                         minute_strings[offset]);
+            }
+          }
         } else {
           releases_in = Glib::ustring::sprintf("1 %s", time_Strings[5]);
         }
