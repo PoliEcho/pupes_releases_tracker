@@ -3,5 +3,5 @@
 <!-- Created with Cambalache 0.96.1 -->
 <cambalache-project version="0.96.0" target_tk="gtk-4.0">
   <ui filename="main_window.ui" sha256="a7cf0b186a284c0266983a01ec7433b4655af1e77a133ec1ee41c1a52957191c"/>
-  <ui filename="add_item_window.ui" sha256="f8a08aef18a9b30c3df37540f07ff6f96d228fc9ee8b3a1235bae5c25408a8ba"/>
+  <ui filename="add_item_window.ui" sha256="c0bc37fec5626076e92eeb6ab7c4040595e86d5c45bc56e4f7c5eb436483ce26"/>
 </cambalache-project>

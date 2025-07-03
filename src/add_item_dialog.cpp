@@ -1,3 +1,9 @@
+#include "gtkmm/button.h"
+#include "gtkmm/checkbutton.h"
+#include "gtkmm/columnview.h"
+#include "gtkmm/entry.h"
+#include "gtkmm/spinbutton.h"
+#include "gtkmm/window.h"
 #include "macros.hpp"
 #include "main.hpp"
 #include <gtkmm.h>
@@ -8,17 +14,65 @@
 #endif
 
 namespace AddItemDialog {
-Gtk::Window *AddItemDialogWindow;
+bool is_AddItemDialogWindow_open = false;
 
-constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder) {}
+void handle_cancel_button(Gtk::Window *AddItemDialogWindow) {
+  is_AddItemDialogWindow_open = false;
+  if (AddItemDialogWindow)
+    AddItemDialogWindow->set_visible(false);
+}
+
+void check_specific_time_checkbox(const Glib::RefPtr<Gtk::Builder> &Builder) {
+  Gtk::CheckButton *ai_specific_time_checkbox =
+      Builder->get_widget<Gtk::CheckButton>("ai_specific_time_checkbox");
+  ai_specific_time_checkbox->set_active(true);
+}
+
+void submit_data(const Glib::RefPtr<Gtk::Builder> &Builder) {
+  Gtk::Entry *title_entry = Builder->get_widget<Gtk::Entry>("ai_title_entry");
+}
+
+constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder,
+                               Gtk::Window *AddItemDialogWindow) {
+  CONNECT_SIGNAL(Builder, Gtk::Button, "ai_cancel_button", signal_clicked,
+                 handle_cancel_button, AddItemDialogWindow)
+  CONNECT_SIGNAL(Builder, Gtk::Button, "ai_ok_button", signal_clicked,
+                 submit_data, Builder)
+
+  CONNECT_SIGNAL(Builder, Gtk::SpinButton, "ai_time_hour_spin",
+                 signal_value_changed, check_specific_time_checkbox, Builder)
+  CONNECT_SIGNAL(Builder, Gtk::SpinButton, "ai_time_minute_spin",
+                 signal_value_changed, check_specific_time_checkbox, Builder)
+}
+
+constexpr void
+setup_entry_popup_menu_handlers(Glib::RefPtr<Gtk::Builder> &Builder) {
+  Gtk::Entry *title_entry = Builder->get_widget<Gtk::Entry>("ai_type_entry");
+
+  CONNECT_ACTION(Builder, "select-movie", title_entry->set_text("Movie");
+                 , title_entry)
+
+  CONNECT_ACTION(Builder, "select-tvshow", title_entry->set_text("TV show");
+                 , title_entry)
+
+  CONNECT_ACTION(Builder, "select-game", title_entry->set_text("Game");
+                 , title_entry)
+
+  CONNECT_ACTION(Builder, "select-book", title_entry->set_text("Book");
+                 , title_entry)
+}
 
 void window_start() {
+  if (is_AddItemDialogWindow_open) {
+    return;
+  }
+  is_AddItemDialogWindow_open = true;
   Glib::RefPtr<Gtk::Builder> Builder = Gtk::Builder::create();
   try {
 #ifndef RELEASE
     Builder->add_from_file("resources/ui/add_item_window.ui");
 #else
-    Builder->add_from_string((char *)resources_ui_main_window_ui);
+    Builder->add_from_string((char *)resources_ui_add_item_window_ui);
 #endif
   } catch (const Glib::FileError &ex) {
     std::cerr << "FileError: " << ex.what() << std::endl;
@@ -31,15 +85,24 @@ void window_start() {
     return;
   }
 
-  AddItemDialogWindow = Builder->get_widget<Gtk::Window>("AddItemDialogWindow");
+  Gtk::Window *AddItemDialogWindow =
+      Builder->get_widget<Gtk::Window>("AddItemDialogWindow");
   if (!AddItemDialogWindow) {
     std::cerr << "Could not get the dialog" << std::endl;
     return;
   };
-  connect_signals(Builder);
+  connect_signals(Builder, AddItemDialogWindow);
+  setup_entry_popup_menu_handlers(Builder);
 
   AddItemDialogWindow->signal_hide().connect(
-      []() { delete AddItemDialogWindow; });
+      [AddItemDialogWindow]() { delete AddItemDialogWindow; });
+
+  AddItemDialogWindow->signal_close_request().connect(
+      []() -> bool {
+        is_AddItemDialogWindow_open = false;
+        return false;
+      },
+      false);
 
   app->add_window(*AddItemDialogWindow);
   AddItemDialogWindow->set_visible(true);

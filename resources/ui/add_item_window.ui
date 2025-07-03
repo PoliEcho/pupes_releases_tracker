@@ -15,7 +15,78 @@
           <object class="GtkGrid">
             <property name="column-spacing">5</property>
             <child>
-              <object class="GtkCalendar" id="ai_calendar">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkCalendar" id="ai_calendar"/>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="halign">end</property>
+                    <property name="spacing">3</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">preferences-system-time-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="ai_specific_time_checkbox">
+                        <property name="has-tooltip">True</property>
+                        <property name="tooltip-text">get notification on specific time</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkGrid">
+                        <property name="halign">center</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label">:</property>
+                            <layout>
+                              <property name="column">1</property>
+                              <property name="column-span">1</property>
+                              <property name="row">0</property>
+                              <property name="row-span">1</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="ai_time_minute_spin">
+                            <property name="adjustment">
+                              <object class="GtkAdjustment">
+                                <property name="page-increment">5.0</property>
+                                <property name="step-increment">1.0</property>
+                                <property name="upper">59.0</property>
+                              </object>
+                            </property>
+                            <property name="wrap">True</property>
+                            <layout>
+                              <property name="column">2</property>
+                              <property name="column-span">1</property>
+                              <property name="row">0</property>
+                              <property name="row-span">1</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="ai_time_hour_spin">
+                            <property name="adjustment">
+                              <object class="GtkAdjustment">
+                                <property name="page-increment">5.0</property>
+                                <property name="step-increment">1.0</property>
+                                <property name="upper">23.0</property>
+                              </object>
+                            </property>
+                            <property name="wrap">True</property>
+                            <layout>
+                              <property name="column">0</property>
+                              <property name="row">0</property>
+                            </layout>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
                 <layout>
                   <property name="column">0</property>
                   <property name="column-span">1</property>
@@ -51,15 +122,19 @@
                               <menu>
                                 <item>
                                   <attribute name="label">Movie</attribute>
+                                  <attribute name="action">app.select-movie</attribute>
                                 </item>
                                 <item>
                                   <attribute name="label">TV show</attribute>
+                                  <attribute name="action">app.select-tvshow</attribute>
                                 </item>
                                 <item>
                                   <attribute name="label">Game</attribute>
+                                  <attribute name="action">app.select-game</attribute>
                                 </item>
                                 <item>
                                   <attribute name="label">Book</attribute>
+                                  <attribute name="action">app.select-book</attribute>
                                 </item>
                               </menu>
                             </property>
@@ -75,7 +150,7 @@
                     <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel">
-                        <property name="label">get desktop notification</property>
+                        <property name="label">get desktop notifications</property>
                       </object>
                     </child>
                     <child>
