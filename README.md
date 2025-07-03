@@ -6,17 +6,17 @@
 > small memory and cpu footprint  
 > ease of use  
 ## Roadmap
-> design UI [x]  
-> data input posible [x]  
-> automatic update of Release In [ ]  
-> load data from disk [ ]  
-> minimize to systray [ ]  
-> notifications [ ]  
+> - [x] design UI   
+> - [x] data input posible   
+> - [ ] automatic update of Release In  
+> - [ ] load data from disk   
+> - [ ] minimize to systray   
+> - [ ] notifications   
 
 
 ## QaA
-> is it just calendar with less features  
-
+> is it just calendar with less features?
+######       
 well, yes, but not really this can help you separate what you need to do and what you want to do +  
 UNIX filozofy says:   
 "Write programs that do one thing and do it well." - <cite>Peter H. Salus, A Quarter-Century of Unix</cite> 
