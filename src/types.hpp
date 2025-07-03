@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <glibmm/object.h>
 #include <glibmm/ustring.h>
-#include <tuple>
 
 class RowData : public Glib::Object {
 public:
