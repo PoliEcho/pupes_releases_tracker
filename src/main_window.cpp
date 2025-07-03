@@ -5,6 +5,7 @@
 #include "macros.hpp"
 #include "main.hpp"
 #include "types.hpp"
+#include <glibmm/binding.h>
 #include <gtkmm.h>
 #include <iostream>
 
@@ -19,7 +20,6 @@ Glib::RefPtr<Gio::ListStore<RowData>> column_view_list_store =
     Gio::ListStore<RowData>::create();
 
 void inicialize_column_view(Gtk::ColumnView *column_view) {
-
   Glib::RefPtr<Gtk::SingleSelection> selection =
       Gtk::SingleSelection::create(column_view_list_store);
 
@@ -47,16 +47,30 @@ void inicialize_column_view(Gtk::ColumnView *column_view) {
           if (label && row_data) {
             switch (i) {
             case 0:
-              label->set_text(row_data->name);
+              label->set_text(row_data->name.get_value());
+              row_data->connect_property_changed("name", [label, row_data]() {
+                label->set_text(row_data->name.get_value());
+              });
               break;
             case 1:
-              label->set_text(row_data->type);
+              label->set_text(row_data->type.get_value());
+              row_data->connect_property_changed("type", [label, row_data]() {
+                label->set_text(row_data->type.get_value());
+              });
               break;
             case 2:
-              label->set_text(row_data->release_date_text);
+              label->set_text(row_data->release_date_text.get_value());
+              row_data->connect_property_changed(
+                  "release-date-text", [label, row_data]() {
+                    label->set_text(row_data->release_date_text.get_value());
+                  });
               break;
             case 3:
-              label->set_text(row_data->releases_in);
+              label->set_text(row_data->releases_in.get_value());
+              row_data->connect_property_changed(
+                  "releases-in", [label, row_data]() {
+                    label->set_text(row_data->releases_in.get_value());
+                  });
               break;
             default:
               label->set_text("");
