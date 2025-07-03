@@ -1,9 +1,13 @@
 #pragma once
+#include "glib.h"
 #include "glibmm/datetime.h"
+#include "glibmm/main.h"
+#include "sigc++/functors/mem_fun.h"
 #include <array>
 #include <cstdint>
 #include <glibmm/object.h>
 #include <glibmm/ustring.h>
+#include <iostream>
 
 class RowData : public Glib::Object {
 public:
@@ -28,7 +32,7 @@ public:
   }
 
 private:
-  void calculate_release_in() {
+  bool calculate_release_in() {
     Glib::DateTime now = Glib::DateTime::create_now_local();
     const std::array<Glib::ustring, 6> time_Strings{"years", "months", "days",
                                                     "year",  "month",  "day"};
@@ -89,6 +93,22 @@ private:
         releases_in.erase(releases_in.length() - 2);
       }
     }
+
+    unsigned int timeout;
+    // 2 minutes, hours, days
+    if (time_to_release_microseconds < 120000000) {
+      timeout = 1000;
+    } else if (time_to_release_microseconds < 7200000000) {
+      timeout = 60000;
+    } else if (time_to_release_microseconds < 172800000000) {
+      timeout = 3600000;
+    } else {
+      timeout = 86400000;
+    }
+    std::clog << "arming timer\n" << releases_in << "\n";
+    Glib::signal_timeout().connect(
+        sigc::mem_fun(*this, &RowData::calculate_release_in), timeout);
+    return false;
   }
 
   // Constructor
