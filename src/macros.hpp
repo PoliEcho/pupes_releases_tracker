@@ -4,7 +4,7 @@
     T *widget = Builder->get_widget<T>(what);                                  \
     widget->signal().connect([__VA_ARGS__]() { where(__VA_ARGS__); });         \
   }
-#define CONNECT_ACTION(Builder, action, code, ...)                             \
+#define CONNECT_ACTION(action, code, ...)                                      \
   {                                                                            \
     Glib::RefPtr<Gio::SimpleAction> Action =                                   \
         Gio::SimpleAction::create(action);                                     \

@@ -47,7 +47,6 @@ void submit_data(const Glib::RefPtr<Gtk::Builder> &Builder) {
           static_cast<double>(release_dateTime.get_second()) +
           (static_cast<double>(release_dateTime.get_microsecond()) /
            1000000.0)));
-  std::clog << release_dateTime.format_iso8601() << "\n";
 
   Gtk::CheckButton *specific_time_checkbox =
       Builder->get_widget<Gtk::CheckButton>("ai_specific_time_checkbox");
@@ -84,17 +83,14 @@ constexpr void
 setup_entry_popup_menu_handlers(Glib::RefPtr<Gtk::Builder> &Builder) {
   Gtk::Entry *title_entry = Builder->get_widget<Gtk::Entry>("ai_type_entry");
 
-  CONNECT_ACTION(Builder, "select-movie", title_entry->set_text("Movie");
+  CONNECT_ACTION("select-movie", title_entry->set_text("Movie");, title_entry)
+
+  CONNECT_ACTION("select-tvshow", title_entry->set_text("TV show");
                  , title_entry)
 
-  CONNECT_ACTION(Builder, "select-tvshow", title_entry->set_text("TV show");
-                 , title_entry)
+  CONNECT_ACTION("select-game", title_entry->set_text("Game");, title_entry)
 
-  CONNECT_ACTION(Builder, "select-game", title_entry->set_text("Game");
-                 , title_entry)
-
-  CONNECT_ACTION(Builder, "select-book", title_entry->set_text("Book");
-                 , title_entry)
+  CONNECT_ACTION("select-book", title_entry->set_text("Book");, title_entry)
 }
 
 void window_start() {
