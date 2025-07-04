@@ -1,9 +1,12 @@
 #pragma once
 
+#include "giomm/notification.h"
 #include "glibmm/datetime.h"
 #include "glibmm/main.h"
 #include "glibmm/object.h"
 #include "glibmm/property.h"
+#include "glibmm/ustring.h"
+#include "main.hpp"
 #include "sigc++/functors/mem_fun.h"
 #include <array>
 #include <cmath>
@@ -122,6 +125,16 @@ private:
       std::clog << "arming timer\n" << releases_in.get_value() << "\n";
       Glib::signal_timeout().connect(
           sigc::mem_fun(*this, &RowData::calculate_release_in), timeout);
+    } else {
+      if (get_notifications) {
+        Glib::RefPtr<Gio::Notification> notification =
+            Gio::Notification::create(
+                Glib::ustring::sprintf("%s, just released", name.get_value()));
+        notification->set_body("go check it out");
+        app->send_notification(
+            Glib::ustring::sprintf("%s-released", name.get_value()),
+            notification);
+      }
     }
     return false;
   }

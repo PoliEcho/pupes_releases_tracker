@@ -11,7 +11,7 @@
 > - [ ] automatic update of Release In  
 > - [ ] load data from disk   
 > - [ ] minimize to systray   
-> - [ ] notifications   
+> - [x] notifications   
 
 
 ## QaA

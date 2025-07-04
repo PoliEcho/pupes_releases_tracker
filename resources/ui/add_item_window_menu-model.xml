@@ -2,15 +2,19 @@
                               <menu>
                                 <item>
                                   <attribute name="label">Movie</attribute>
+				  <attribute name="action">app.select-movie</attribute>
                                 </item>
                                 <item>
                                   <attribute name="label">TV show</attribute>
+				  <attribute name="action">app.select-tvshow</attribute>
                                 </item>
                                 <item>
                                   <attribute name="label">Game</attribute>
+                                  <attribute name="action">app.select-game</attribute>
                                 </item>
                                 <item>
                                   <attribute name="label">Book</attribute>
+                                  <attribute name="action">app.select-book</attribute>
                                 </item>
                               </menu>
                             </property>
