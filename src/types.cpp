@@ -1,6 +1,17 @@
 #include "types.hpp"
+#include "giomm/notification.h"
+#include "giomm/simpleaction.h"
+#include "glibmm/main.h"
 #include "glibmm/refptr.h"
+#include "macros.hpp"
+#include "main.hpp"
 #include "main_window.hpp"
+#include <cmath>
+#include <giomm.h>
+#include <giomm/dbusinterface.h>
+#include <giomm/dbusproxy.h>
+#include <glibmm/variant.h>
+#include <unistd.h>
 
 Glib::RefPtr<RowData> RowData::create(const Glib::ustring &name,
                                       const Glib::ustring &type,
@@ -98,7 +109,6 @@ bool RowData::calculate_release_in() {
   }
 
   if (arm_timer) {
-    std::clog << "arming timer\n" << releases_in.get_value() << "\n";
     Glib::signal_timeout().connect(
         sigc::mem_fun(*this, &RowData::calculate_release_in), timeout);
   } else {

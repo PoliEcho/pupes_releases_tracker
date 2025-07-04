@@ -1,19 +1,10 @@
 #pragma once
 
-#include "giomm/notification.h"
-#include "glib.h"
+#include "giomm/dbusconnection.h"
 #include "glibmm/datetime.h"
-#include "glibmm/main.h"
 #include "glibmm/object.h"
 #include "glibmm/property.h"
 #include "glibmm/ustring.h"
-#include "macros.hpp"
-#include "main.hpp"
-#include "sigc++/functors/mem_fun.h"
-#include <array>
-#include <cmath>
-#include <cstdint>
-#include <iostream>
 
 class RowData : public Glib::Object {
 public:
