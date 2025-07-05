@@ -90,6 +90,26 @@ constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder) {
 }
 constexpr void connect_actions() {
   CONNECT_ACTION("show-about", AboutDialog::show_about_window();)
+  CONNECT_ACTION("new-item", AddItemDialog::window_start();)
+  CONNECT_ACTION("delete-all-items", column_view_list_store->remove_all();
+                 save_list_store_to_file();)
+}
+bool on_key_pressed(guint keyval, [[maybe_unused]] guint keycode,
+                    [[maybe_unused]] Gdk::ModifierType state,
+                    Gtk::ColumnView *column_view) {
+  if (keyval == GDK_KEY_Delete) {
+    Glib::RefPtr<Gtk::SingleSelection> selection =
+        std::dynamic_pointer_cast<Gtk::SingleSelection>(
+            column_view->get_model());
+
+    if (selection && selection->get_selected_item()) {
+      guint selected_position = selection->get_selected();
+      column_view_list_store->remove(selected_position);
+      save_list_store_to_file();
+      return true;
+    }
+  }
+  return false;
 }
 
 void on_app_activate() {
@@ -118,11 +138,18 @@ void on_app_activate() {
   };
 
   load_list_store_from_file();
-  inicialize_column_view(
-      Builder->get_widget<Gtk::ColumnView>("mw_column_view"));
+  Gtk::ColumnView *column_view =
+      Builder->get_widget<Gtk::ColumnView>("mw_column_view");
+  inicialize_column_view(column_view);
 
   connect_signals(Builder);
   connect_actions();
+
+  Glib::RefPtr<Gtk::EventControllerKey> key_controller =
+      Gtk::EventControllerKey::create();
+  key_controller->signal_key_pressed().connect(
+      sigc::bind(sigc::ptr_fun(&on_key_pressed), column_view), false);
+  MainWindow->add_controller(key_controller);
 
   MainWindow->signal_hide().connect([]() { delete MainWindow; });
   app->add_window(*MainWindow);

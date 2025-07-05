@@ -22,7 +22,7 @@
 namespace AddItemDialog {
 bool is_AddItemDialogWindow_open = false;
 
-void handle_cancel_button(Gtk::Window *AddItemDialogWindow) {
+void close_add_item_dialog(Gtk::Window *AddItemDialogWindow) {
   is_AddItemDialogWindow_open = false;
   if (AddItemDialogWindow)
     AddItemDialogWindow->set_visible(false);
@@ -34,7 +34,8 @@ void check_specific_time_checkbox(const Glib::RefPtr<Gtk::Builder> &Builder) {
   ai_specific_time_checkbox->set_active(true);
 }
 
-void submit_data(const Glib::RefPtr<Gtk::Builder> &Builder) {
+void submit_data(const Glib::RefPtr<Gtk::Builder> &Builder,
+                 Gtk::Window *AddItemDialogWindow) {
   Gtk::Entry *title_entry = Builder->get_widget<Gtk::Entry>("ai_title_entry");
   Gtk::Entry *type_entry = Builder->get_widget<Gtk::Entry>("ai_type_entry");
   Gtk::Switch *notif_switch =
@@ -66,14 +67,15 @@ void submit_data(const Glib::RefPtr<Gtk::Builder> &Builder) {
       title_entry->get_text(), type_entry->get_text(), release_dateTime,
       specific_time_is_set, notif_switch->get_state()));
   save_list_store_to_file();
+  close_add_item_dialog(AddItemDialogWindow);
 }
 
 constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder,
                                Gtk::Window *AddItemDialogWindow) {
   CONNECT_SIGNAL(Builder, Gtk::Button, "ai_cancel_button", signal_clicked,
-                 handle_cancel_button, AddItemDialogWindow)
+                 close_add_item_dialog, AddItemDialogWindow)
   CONNECT_SIGNAL(Builder, Gtk::Button, "ai_ok_button", signal_clicked,
-                 submit_data, Builder)
+                 submit_data, Builder, AddItemDialogWindow)
 
   CONNECT_SIGNAL(Builder, Gtk::SpinButton, "ai_time_hour_spin",
                  signal_value_changed, check_specific_time_checkbox, Builder)
