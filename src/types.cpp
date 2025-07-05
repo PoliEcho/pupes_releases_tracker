@@ -11,6 +11,7 @@
 #include <giomm/dbusinterface.h>
 #include <giomm/dbusproxy.h>
 #include <glibmm/variant.h>
+#include <iostream>
 #include <unistd.h>
 
 Glib::RefPtr<RowData> RowData::create(const Glib::ustring &name,
@@ -48,8 +49,10 @@ bool RowData::calculate_release_in() {
       if (specific_time_is_set) {
         double hours =
             static_cast<double>(time_to_release_microseconds) / 3600000000;
-        uint8_t hours_rounded = std::round(hours);
-        if (hours_rounded >= 1) {
+
+        if (hours > static_cast<double>(static_cast<double>(59) /
+                                        static_cast<double>(60))) {
+          uint8_t hours_rounded = std::round(hours);
           const std::array<const char *, 2> hour_strings{"hour", "hours"};
           uint8_t offset = 0;
           if (hours > 1) {
@@ -59,11 +62,11 @@ bool RowData::calculate_release_in() {
                                                    hour_strings[offset]);
         } else {
           double minutes = hours * 60;
-          if (minutes < 1) {
+          if ((std::round(minutes) + 1) < 1) {
             new_releases_in = "released!";
             arm_timer = false;
           } else {
-            uint8_t minutes_rounded = std::round(minutes);
+            uint8_t minutes_rounded = std::ceil(minutes);
             const std::array<const char *, 2> minute_strings{"minute",
                                                              "minutes"};
             uint8_t offset = 0;
@@ -101,11 +104,11 @@ bool RowData::calculate_release_in() {
   if (time_to_release_microseconds < 120000000) {
     timeout = 1000;
   } else if (time_to_release_microseconds < 7200000000) {
-    timeout = 60000;
+    timeout = 30000;
   } else if (time_to_release_microseconds < 172800000000) {
-    timeout = 3600000;
+    timeout = 1800000;
   } else {
-    timeout = 86400000;
+    timeout = 43200000;
   }
 
   if (arm_timer) {
