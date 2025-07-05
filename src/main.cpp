@@ -4,10 +4,10 @@
 
 Glib::RefPtr<Gtk::Application> app;
 
-int main(int argc, char **argv) {
+int main() {
   app = Gtk::Application::create("org.pupes.releases-tracker");
 
   app->signal_activate().connect([]() { MainWindow::on_app_activate(); });
 
-  return app->run(argc, argv);
+  return app->run();
 }

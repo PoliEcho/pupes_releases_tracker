@@ -10,6 +10,7 @@
 #include "macros.hpp"
 #include "main.hpp"
 #include "main_window.hpp"
+#include "persistance.hpp"
 #include "types.hpp"
 #include <gtkmm.h>
 #include <iostream>
@@ -64,6 +65,7 @@ void submit_data(const Glib::RefPtr<Gtk::Builder> &Builder) {
   MainWindow::column_view_list_store->append(RowData::create(
       title_entry->get_text(), type_entry->get_text(), release_dateTime,
       specific_time_is_set, notif_switch->get_state()));
+  save_list_store_to_file();
 }
 
 constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder,

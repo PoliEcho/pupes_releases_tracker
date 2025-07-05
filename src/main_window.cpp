@@ -4,6 +4,7 @@
 #include "gtkmm/columnview.h"
 #include "macros.hpp"
 #include "main.hpp"
+#include "persistance.hpp"
 #include "types.hpp"
 #include <glibmm/binding.h>
 #include <gtkmm.h>
@@ -112,16 +113,13 @@ void on_app_activate() {
     return;
   };
 
-  Gtk::ColumnView *mw_column_view =
-      Builder->get_widget<Gtk::ColumnView>("mw_column_view");
-  inicialize_column_view(mw_column_view);
+  load_list_store_from_file();
+  inicialize_column_view(
+      Builder->get_widget<Gtk::ColumnView>("mw_column_view"));
 
   connect_signals(Builder);
 
   MainWindow->signal_hide().connect([]() { delete MainWindow; });
-
-  // column_view_list_store->append(
-  //  RowData::create("star trek", "TV show", "17 july", "15 days"));
 
   app->add_window(*MainWindow);
   MainWindow->set_visible(true);

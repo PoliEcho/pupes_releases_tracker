@@ -8,8 +8,8 @@
 ## Roadmap
 > - [x] design UI   
 > - [x] data input posible   
-> - [ ] automatic update of Release In  
-> - [ ] load data from disk   
+> - [x] automatic update of Release In  
+> - [x] load data from disk   
 > - [ ] minimize to systray   
 > - [x] notifications   
 
