@@ -3,12 +3,14 @@
 #include "add_item_dialog.hpp"
 #include "gtkmm/button.h"
 #include "gtkmm/columnview.h"
+#include "gtkmm/popovermenubar.h"
 #include "macros.hpp"
 #include "main.hpp"
 #include "persistance.hpp"
 #include "types.hpp"
 #include <glibmm/binding.h>
 #include <gtkmm.h>
+#include <gtkmm/settings.h>
 #include <iostream>
 
 #ifdef RELEASE
@@ -17,6 +19,7 @@
 
 namespace MainWindow {
 Gtk::Window *MainWindow = nullptr;
+bool MainWindow_visible = true;
 
 Glib::RefPtr<Gio::ListStore<RowData>> column_view_list_store =
     Gio::ListStore<RowData>::create();
@@ -112,7 +115,21 @@ bool on_key_pressed(guint keyval, [[maybe_unused]] guint keycode,
   return false;
 }
 
-void on_app_activate() {
+bool toggle_visibility() {
+  if (MainWindow_visible) {
+    app->hold();
+    MainWindow->hide();
+    MainWindow_visible = false;
+  } else {
+    start_main_window();
+    app->release();
+    MainWindow_visible = true;
+  }
+
+  return false;
+}
+
+void start_main_window() {
   Glib::RefPtr<Gtk::Builder> Builder = Gtk::Builder::create();
   try {
 #ifndef RELEASE

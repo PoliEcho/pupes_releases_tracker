@@ -2,6 +2,7 @@
 #include "dynamic_src.hpp"
 #include "glib.h"
 #include "main_window.hpp"
+#include "systray_conn.hpp"
 #include <fstream>
 #include <gtkmm/builder.h>
 
@@ -11,7 +12,7 @@ Glib::RefPtr<Gdk::Texture> app_icon;
 int main() {
   app = Gtk::Application::create("org.pupes.releases-tracker");
 
-  app->signal_activate().connect([]() { MainWindow::on_app_activate(); });
+  app->signal_activate().connect([]() { MainWindow::start_main_window(); });
 
   app_icon = []() -> Glib::RefPtr<Gdk::Texture> {
 #ifdef RELEASE
@@ -35,6 +36,8 @@ int main() {
 #endif
     return Gdk::Texture::create_from_bytes(Glib::wrap(app_logo_bytes));
   }();
+
+  Systray::init_sytray();
 
   return app->run();
 }
