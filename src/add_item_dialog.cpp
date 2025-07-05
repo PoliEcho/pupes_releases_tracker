@@ -137,7 +137,6 @@ void window_start() {
       },
       false);
 
-  app->add_window(*AddItemDialogWindow);
   AddItemDialogWindow->set_visible(true);
 }
 } // namespace AddItemDialog

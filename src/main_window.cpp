@@ -1,4 +1,5 @@
 #include "main_window.hpp"
+#include "about.hpp"
 #include "add_item_dialog.hpp"
 #include "gtkmm/button.h"
 #include "gtkmm/columnview.h"
@@ -87,6 +88,9 @@ constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder) {
   CONNECT_SIGNAL(Builder, Gtk::Button, "mw_add_item_button", signal_clicked,
                  AddItemDialog::window_start)
 }
+constexpr void connect_actions() {
+  CONNECT_ACTION("show-about", AboutDialog::show_about_window();)
+}
 
 void on_app_activate() {
   Glib::RefPtr<Gtk::Builder> Builder = Gtk::Builder::create();
@@ -118,10 +122,12 @@ void on_app_activate() {
       Builder->get_widget<Gtk::ColumnView>("mw_column_view"));
 
   connect_signals(Builder);
+  connect_actions();
 
   MainWindow->signal_hide().connect([]() { delete MainWindow; });
-
   app->add_window(*MainWindow);
+  // NO Icon since they removed option to set it from texture in GTK4
+  // so i will use some standard icon
   MainWindow->set_visible(true);
 }
 } // namespace MainWindow

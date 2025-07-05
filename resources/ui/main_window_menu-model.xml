@@ -5,9 +5,11 @@
                   <section>
                     <item>
                       <attribute name="label">new item</attribute>
+		     <attribute name="action">app.new-item</attribute>
                     </item>
                     <item>
                       <attribute name="label">delete all items</attribute>
+		      <attribute name="action">app.delete-all-items</attribute>
                     </item>
                   </section>
                 </submenu>
@@ -16,6 +18,7 @@
                   <section>
                     <item>
                       <attribute name="label">minimize to systray</attribute>
+		      <attribute name="action">app.minimize-to-systray-toggle</attribute>
                     </item>
                   </section>
                 </submenu>
@@ -24,6 +27,7 @@
                   <section>
                     <item>
                       <attribute name="label">About</attribute>
+		      <attribute name="action">app.show-about</attribute>
                     </item>
                   </section>
                 </submenu>

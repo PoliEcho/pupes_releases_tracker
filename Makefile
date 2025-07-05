@@ -20,10 +20,13 @@ endif
 SRC_FILES := $(shell find $(SRC_PATH) -name '*.cpp')
 OBJ_FILES := $(patsubst $(SRC_PATH)/%.cpp,$(OBJ_PATH)/%.o,$(SRC_FILES))
 
-RESOURCE_FILES := resources/ui/main_window.ui resources/ui/add_item_window.ui
+RESOURCE_FILES := resources/ui/main_window.ui resources/ui/add_item_window.ui resources/ui/about.ui resources/img/icon.svg
 
-RESOURCE_CPP_FILES := $(patsubst resources/ui/%.ui,$(DYNAMIC_SRC_PATH)/%_ui.cpp,$(RESOURCE_FILES))
-RESOURCE_OBJ_FILES := $(patsubst resources/ui/%.ui,$(OBJ_PATH)/%_ui.o,$(RESOURCE_FILES))
+resource_to_cpp = $(DYNAMIC_SRC_PATH)/$(basename $(notdir $1))_resource.cpp
+resource_to_obj = $(OBJ_PATH)/$(basename $(notdir $1))_resource.o
+
+RESOURCE_CPP_FILES := $(foreach file,$(RESOURCE_FILES),$(call resource_to_cpp,$(file)))
+RESOURCE_OBJ_FILES := $(foreach file,$(RESOURCE_FILES),$(call resource_to_obj,$(file)))
 
 ifeq ($(BUILD_TYPE),release)
 OBJ_FILES += $(RESOURCE_OBJ_FILES)
@@ -43,20 +46,28 @@ make-build-dir:
 	mkdir -p $(DYNAMIC_SRC_PATH)
 
 ifeq ($(BUILD_TYPE),release)
-make-dynamic-src: $(RESOURCE_CPP_FILES)
-	
-$(DYNAMIC_SRC_PATH)/%_ui.cpp: resources/ui/%.ui
-	xxd -i $< | head -n -1 | tr '\n' ' ' | sed 's/ };/, 0x00 };/' > $@
 
-$(OBJ_PATH)/%_ui.o: $(DYNAMIC_SRC_PATH)/%_ui.cpp
-	$(CPPC) $(CPPC_FLAGS) -c $< -o $@
+make-dynamic-src: $(RESOURCE_CPP_FILES) | make-build-dir
+
+# Generate explicit rules for each resource file
+define make-resource-rule
+$(call resource_to_cpp,$1): $1
+	xxd -i $$< | tr '\n' ' ' | sed 's/ };/, 0x00 };/' > $$@
+
+$(call resource_to_obj,$1): $(call resource_to_cpp,$1)
+	$$(CPPC) $$(CPPC_FLAGS) -c $$< -o $$@
+endef
+
+$(foreach res,$(RESOURCE_FILES),$(eval $(call make-resource-rule,$(res))))
 
 else
+
 make-dynamic-src:
-	@echo "Skiped resource embedding"
+	@echo "Skipped resource embedding"
+
 endif
 
-$(BIN_PATH)/$(BIN_NAME): $(OBJ_FILES)
+$(BIN_PATH)/$(BIN_NAME): $(OBJ_FILES) | make-build-dir
 	$(CPPC) $(CPPC_FLAGS) $^ -o $@
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
