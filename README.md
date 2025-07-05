@@ -1,3 +1,4 @@
+<img src="https://github.com/PoliEcho/pupes_releases_tracker/raw/refs/heads/master/resources/img/icon.svg" alt="Project logo" width="128"></img>
 # Pupes releases tracker
 #### minimal gtk4(gtkmm4) app writen in C++ for tracking when your favorite stuff comes out 
 
