@@ -11,7 +11,7 @@
 > - [x] data input posible   
 > - [x] automatic update of Release In  
 > - [x] load data from disk   
-> - [ ] minimize to systray   
+> - [x] minimize to systray   
 > - [x] notifications   
 
 
