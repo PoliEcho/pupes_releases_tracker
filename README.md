@@ -15,6 +15,13 @@
 > - [x] notifications   
 
 
+## Dependencies  
+> GTK3  
+> GTKmm4  
+> libappindicator3
+> #### Build only  
+> nlohmann-json
+
 ## QaA
 > is it just calendar with less features?
 ######       
