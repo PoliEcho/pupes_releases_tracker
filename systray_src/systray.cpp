@@ -135,7 +135,7 @@ void createMenu(int sockfd) {
   menu = gtk_menu_new();
 
   // Add menu items
-  GtkWidget *item_show = gtk_menu_item_new_with_label("Show App");
+  GtkWidget *item_show = gtk_menu_item_new_with_label("Show/Hide App");
   GtkWidget *item_about = gtk_menu_item_new_with_label("About");
   GtkWidget *separator = gtk_separator_menu_item_new();
   GtkWidget *item_exit = gtk_menu_item_new_with_label("Exit");
