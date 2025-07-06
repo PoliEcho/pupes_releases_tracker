@@ -78,7 +78,8 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp | make-build-dir
 	$(CPPC) $(CPPC_FLAGS) $(MAIN_LD_FLAGS) -c $< -o $@
 
 $(BIN_PATH)/$(SYSTRAY_BIN_NAME): $(SYSTRAY_SRC_PATH)/systray.cpp
-	$(CPPC) $(CPPC_FLAGS) $(SYSTRAY_LD_FLAGS) $< -o $@
+	$(CPPC) $(CPPC_FLAGS) $< $(SYSTRAY_LD_FLAGS) -o $@
+
 
 install:
 	@install -vpm 755 -o root -g root $(BIN_PATH)/$(BIN_NAME) /usr/bin/
