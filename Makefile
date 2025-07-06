@@ -1,5 +1,6 @@
 CPPC = g++
-MAIN_LD_FLAGS = `pkg-config --cflags --libs gtkmm-4.0`
+MAIN_CFLAGS = `pkg-config --cflags gtkmm-4.0`
+MAIN_LIBS = `pkg-config --libs gtkmm-4.0`
 SYSTRAY_LD_FLAGS = `pkg-config --cflags --libs gtk+-3.0 appindicator3-0.1`
 COMMON_CPPC_FLAGS = -std=c++23 -Wall -Wextra -Wno-write-strings -Wno-int-to-pointer-cast
 CPPC_FLAGS = -s -O3 $(COMMON_CPPC_FLAGS) -DRELEASE
@@ -36,7 +37,7 @@ ifeq ($(BUILD_TYPE),release)
 OBJ_FILES += $(RESOURCE_OBJ_FILES)
 endif
 
-all: make-dynamic-src $(BIN_PATH)/$(BIN_NAME) | make-build-dir 
+all: make-dynamic-src $(BIN_PATH)/$(BIN_NAME) | make-build-dir
 
 debug: CPPC_FLAGS = $(DEBUG_FLAGS)
 debug: make-build-dir $(BIN_PATH)/$(BIN_NAME)
@@ -59,7 +60,8 @@ $(call resource_to_cpp,$1): $1 | make-build-dir
 	xxd -i $$< | tr '\n' ' ' | sed 's/ };/, 0x00 };/' > $$@
 
 $(call resource_to_obj,$1): $(call resource_to_cpp,$1) | make-build-dir
-	$$(CPPC) $$(CPPC_FLAGS) $$(MAIN_LD_FLAGS) -c $$< -o $$@
+	$$(CPPC) $$(CPPC_FLAGS) $$(MAIN_CFLAGS) -c $$< -o $$@
+
 endef
 
 $(foreach res,$(RESOURCE_FILES),$(eval $(call make-resource-rule,$(res))))
@@ -72,14 +74,13 @@ make-dynamic-src:
 endif
 
 $(BIN_PATH)/$(BIN_NAME): $(OBJ_FILES) | make-build-dir
-	$(CPPC) $(CPPC_FLAGS) $(MAIN_LD_FLAGS) $^ -o $@
+	$(CPPC) $(CPPC_FLAGS) $^ $(MAIN_LIBS) -o $@
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp | make-build-dir
-	$(CPPC) $(CPPC_FLAGS) $(MAIN_LD_FLAGS) -c $< -o $@
+	$(CPPC) $(CPPC_FLAGS) $(MAIN_CFLAGS) -c $< -o $@
 
 $(BIN_PATH)/$(SYSTRAY_BIN_NAME): $(SYSTRAY_SRC_PATH)/systray.cpp
 	$(CPPC) $(CPPC_FLAGS) $< $(SYSTRAY_LD_FLAGS) -o $@
-
 
 install:
 	@install -vpm 755 -o root -g root $(BIN_PATH)/$(BIN_NAME) /usr/bin/
