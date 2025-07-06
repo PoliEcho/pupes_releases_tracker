@@ -53,27 +53,26 @@ void inicialize_column_view(Gtk::ColumnView *column_view) {
           Glib::RefPtr<RowData> row_data =
               std::dynamic_pointer_cast<RowData>(item->get_item());
           if (label && row_data) {
-            if (window_visible) {
-              switch (i) {
-              case 0:
-                CONNECT_PROPERTY_CNAGES(row_data, label, name, "name",
-                                        window_visible)
-                break;
-              case 1:
-                CONNECT_PROPERTY_CNAGES(row_data, label, type, "type",
-                                        window_visible)
-                break;
-              case 2:
-                CONNECT_PROPERTY_CNAGES(row_data, label, release_date_text,
-                                        "release-date-text", window_visible)
-                break;
-              case 3:
-                CONNECT_PROPERTY_CNAGES(row_data, label, releases_in,
-                                        "releases-in", window_visible)
-                break;
-              default:
-                label->set_text("");
-              }
+
+            switch (i) {
+            case 0:
+              CONNECT_PROPERTY_CNAGES(row_data, label, name, "name",
+                                      window_visible)
+              break;
+            case 1:
+              CONNECT_PROPERTY_CNAGES(row_data, label, type, "type",
+                                      window_visible)
+              break;
+            case 2:
+              CONNECT_PROPERTY_CNAGES(row_data, label, release_date_text,
+                                      "release-date-text", window_visible)
+              break;
+            case 3:
+              CONNECT_PROPERTY_CNAGES(row_data, label, releases_in,
+                                      "releases-in", window_visible)
+              break;
+            default:
+              label->set_text("");
             }
           }
         });
