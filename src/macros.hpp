@@ -13,4 +13,14 @@
     app->add_action(Action);                                                   \
   }
 
+#define CONNECT_PROPERTY_CNAGES(row_data, label, column_internal, column,      \
+                                check)                                         \
+  {                                                                            \
+    label->set_text(row_data->column_internal.get_value());                    \
+    row_data->connect_property_changed(column, [label, row_data]() {           \
+      if (check) {                                                             \
+        label->set_text(row_data->column_internal.get_value());                \
+      }                                                                        \
+    });                                                                        \
+  }
 #endif

@@ -112,7 +112,7 @@ bool RowData::calculate_release_in() {
   }
 
   if (arm_timer) {
-    Glib::signal_timeout().connect(
+    timer = Glib::signal_timeout().connect(
         sigc::mem_fun(*this, &RowData::calculate_release_in), timeout);
   } else {
     if (get_notifications) {
@@ -151,3 +151,5 @@ RowData::RowData(const Glib::ustring &name, const Glib::ustring &type,
   release_date_text.set_value(date_text);
   calculate_release_in();
 }
+
+void RowData::disarm_timer() { timer.disconnect(); }

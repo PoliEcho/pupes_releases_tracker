@@ -52,7 +52,6 @@ void send_msg(uint8_t msg) {
     printf("Error sending message\n");
     return;
   }
-  std::clog << "message send";
 }
 
 void listen_on_socket() {

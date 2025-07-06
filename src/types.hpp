@@ -25,8 +25,11 @@ public:
 
   static void delete_ColumnView_List_by_prt(const RowData *RowData_ptr);
 
+  void disarm_timer();
+
 private:
   bool calculate_release_in();
+  sigc::connection timer;
 
   RowData(const Glib::ustring &name, const Glib::ustring &type,
           const Glib::DateTime &release_date, bool specific_time_is_set,

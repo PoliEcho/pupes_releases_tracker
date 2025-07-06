@@ -1,6 +1,7 @@
 #include "main_window.hpp"
 #include "about.hpp"
 #include "add_item_dialog.hpp"
+#include "glib.h"
 #include "gtkmm/button.h"
 #include "gtkmm/columnview.h"
 #include "macros.hpp"
@@ -8,6 +9,7 @@
 #include "persistance.hpp"
 #include "systray_conn.hpp"
 #include "types.hpp"
+#include <cstddef>
 #include <glibmm/binding.h>
 #include <gtkmm.h>
 #include <gtkmm/settings.h>
@@ -19,7 +21,7 @@
 
 namespace MainWindow {
 Gtk::Window *MainWindow = nullptr;
-bool MainWindow_visible = true;
+bool window_visible = true;
 bool minimize_to_systray = true;
 
 Glib::RefPtr<Gio::ListStore<RowData>> column_view_list_store =
@@ -51,35 +53,27 @@ void inicialize_column_view(Gtk::ColumnView *column_view) {
           Glib::RefPtr<RowData> row_data =
               std::dynamic_pointer_cast<RowData>(item->get_item());
           if (label && row_data) {
-            switch (i) {
-            case 0:
-              label->set_text(row_data->name.get_value());
-              row_data->connect_property_changed("name", [label, row_data]() {
-                label->set_text(row_data->name.get_value());
-              });
-              break;
-            case 1:
-              label->set_text(row_data->type.get_value());
-              row_data->connect_property_changed("type", [label, row_data]() {
-                label->set_text(row_data->type.get_value());
-              });
-              break;
-            case 2:
-              label->set_text(row_data->release_date_text.get_value());
-              row_data->connect_property_changed(
-                  "release-date-text", [label, row_data]() {
-                    label->set_text(row_data->release_date_text.get_value());
-                  });
-              break;
-            case 3:
-              label->set_text(row_data->releases_in.get_value());
-              row_data->connect_property_changed(
-                  "releases-in", [label, row_data]() {
-                    label->set_text(row_data->releases_in.get_value());
-                  });
-              break;
-            default:
-              label->set_text("");
+            if (window_visible) {
+              switch (i) {
+              case 0:
+                CONNECT_PROPERTY_CNAGES(row_data, label, name, "name",
+                                        window_visible)
+                break;
+              case 1:
+                CONNECT_PROPERTY_CNAGES(row_data, label, type, "type",
+                                        window_visible)
+                break;
+              case 2:
+                CONNECT_PROPERTY_CNAGES(row_data, label, release_date_text,
+                                        "release-date-text", window_visible)
+                break;
+              case 3:
+                CONNECT_PROPERTY_CNAGES(row_data, label, releases_in,
+                                        "releases-in", window_visible)
+                break;
+              default:
+                label->set_text("");
+              }
             }
           }
         });
@@ -95,8 +89,12 @@ constexpr void connect_signals(Glib::RefPtr<Gtk::Builder> &Builder) {
 constexpr void connect_actions() {
   CONNECT_ACTION("show-about", AboutDialog::show_about_window();)
   CONNECT_ACTION("new-item", AddItemDialog::window_start();)
-  CONNECT_ACTION("delete-all-items", column_view_list_store->remove_all();
-                 save_persistent_to_file();)
+  CONNECT_ACTION(
+      "delete-all-items",
+      for (guint i = 0; column_view_list_store->get_n_items() > i; i++) {
+        column_view_list_store->get_item(i)->disarm_timer();
+      } column_view_list_store->remove_all();
+      save_persistent_to_file();)
 
   {
     Glib::RefPtr<Gio::SimpleAction> action = Gio::SimpleAction::create_bool(
@@ -122,6 +120,7 @@ bool on_key_pressed(guint keyval, [[maybe_unused]] guint keycode,
 
     if (selection && selection->get_selected_item()) {
       guint selected_position = selection->get_selected();
+      column_view_list_store->get_item(selected_position)->disarm_timer();
       column_view_list_store->remove(selected_position);
       save_persistent_to_file();
       return true;
@@ -131,14 +130,14 @@ bool on_key_pressed(guint keyval, [[maybe_unused]] guint keycode,
 }
 
 bool toggle_visibility() {
-  if (MainWindow_visible) {
+  if (window_visible) {
     app->hold();
     MainWindow->hide();
-    MainWindow_visible = false;
+    window_visible = false;
   } else {
     start_main_window();
     app->release();
-    MainWindow_visible = true;
+    window_visible = true;
   }
 
   return false;
