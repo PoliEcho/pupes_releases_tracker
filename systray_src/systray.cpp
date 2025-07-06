@@ -90,20 +90,17 @@ void send_msg(const int sockfd, uint8_t msg) {
 
 static void onShowApp([[maybe_unused]] GtkMenuItem *menuitem,
                       gpointer sockfd_void_ptr) {
-  std::cout << "Show App clicked!" << std::endl;
   // avoid needing to use -fpermisive
   send_msg((size_t)sockfd_void_ptr, 0);
 }
 
 static void onAbout([[maybe_unused]] GtkMenuItem *menuitem,
                     gpointer sockfd_void_ptr) {
-  std::cout << "About clicked!" << std::endl;
   send_msg((size_t)sockfd_void_ptr, 1);
 }
 
 static void onExit([[maybe_unused]] GtkMenuItem *menuitem,
                    gpointer sockfd_void_ptr) {
-  std::cout << "Exit clicked!" << std::endl;
   send_msg((size_t)sockfd_void_ptr, 2);
   gtk_main_quit();
 }

@@ -1,6 +1,5 @@
 #include "types.hpp"
 #include "giomm/notification.h"
-#include "giomm/simpleaction.h"
 #include "glibmm/main.h"
 #include "glibmm/refptr.h"
 #include "macros.hpp"
@@ -11,7 +10,6 @@
 #include <giomm/dbusinterface.h>
 #include <giomm/dbusproxy.h>
 #include <glibmm/variant.h>
-#include <iostream>
 #include <unistd.h>
 
 Glib::RefPtr<RowData> RowData::create(const Glib::ustring &name,

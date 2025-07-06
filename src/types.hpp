@@ -1,6 +1,5 @@
 #pragma once
 
-#include "giomm/dbusconnection.h"
 #include "glibmm/datetime.h"
 #include "glibmm/object.h"
 #include "glibmm/property.h"
