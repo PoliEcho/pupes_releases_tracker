@@ -2,6 +2,7 @@
 # Pupes releases tracker
 #### minimal gtk4(gtkmm4) app writen in C++ for tracking when your favorite stuff comes out 
 
+### Demo  
 <details>
 <summary>Demo</summary>
 
