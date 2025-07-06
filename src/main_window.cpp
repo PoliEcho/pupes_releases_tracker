@@ -3,10 +3,10 @@
 #include "add_item_dialog.hpp"
 #include "gtkmm/button.h"
 #include "gtkmm/columnview.h"
-#include "gtkmm/popovermenubar.h"
 #include "macros.hpp"
 #include "main.hpp"
 #include "persistance.hpp"
+#include "systray_conn.hpp"
 #include "types.hpp"
 #include <glibmm/binding.h>
 #include <gtkmm.h>
@@ -20,6 +20,7 @@
 namespace MainWindow {
 Gtk::Window *MainWindow = nullptr;
 bool MainWindow_visible = true;
+bool minimize_to_systray = true;
 
 Glib::RefPtr<Gio::ListStore<RowData>> column_view_list_store =
     Gio::ListStore<RowData>::create();
@@ -95,8 +96,22 @@ constexpr void connect_actions() {
   CONNECT_ACTION("show-about", AboutDialog::show_about_window();)
   CONNECT_ACTION("new-item", AddItemDialog::window_start();)
   CONNECT_ACTION("delete-all-items", column_view_list_store->remove_all();
-                 save_list_store_to_file();)
+                 save_persistent_to_file();)
+
+  {
+    Glib::RefPtr<Gio::SimpleAction> action = Gio::SimpleAction::create_bool(
+        "minimize-to-systray-toggle", minimize_to_systray);
+    app->add_action(action);
+    action->signal_activate().connect(
+        [action]([[maybe_unused]] const Glib::VariantBase &parameter) {
+          minimize_to_systray =
+              !action->get_state_variant().get_dynamic<bool>();
+          action->set_state(Glib::Variant<bool>::create(minimize_to_systray));
+          save_persistent_to_file();
+        });
+  }
 }
+
 bool on_key_pressed(guint keyval, [[maybe_unused]] guint keycode,
                     [[maybe_unused]] Gdk::ModifierType state,
                     Gtk::ColumnView *column_view) {
@@ -108,7 +123,7 @@ bool on_key_pressed(guint keyval, [[maybe_unused]] guint keycode,
     if (selection && selection->get_selected_item()) {
       guint selected_position = selection->get_selected();
       column_view_list_store->remove(selected_position);
-      save_list_store_to_file();
+      save_persistent_to_file();
       return true;
     }
   }
@@ -154,7 +169,7 @@ void start_main_window() {
     return;
   };
 
-  load_list_store_from_file();
+  load_persistent_file();
   Gtk::ColumnView *column_view =
       Builder->get_widget<Gtk::ColumnView>("mw_column_view");
   inicialize_column_view(column_view);
@@ -169,7 +184,22 @@ void start_main_window() {
   MainWindow->add_controller(key_controller);
 
   MainWindow->signal_hide().connect([]() { delete MainWindow; });
+
+  MainWindow->signal_close_request().connect(
+      []() -> bool {
+        if (minimize_to_systray) {
+          toggle_visibility();
+          return true;
+        } else {
+          Systray::send_msg(255);
+          app->quit();
+          return false;
+        }
+      },
+      false);
+
   app->add_window(*MainWindow);
+
   // NO Icon since they removed option to set it from texture in GTK4
   // so i will use some standard icon
   MainWindow->set_visible(true);

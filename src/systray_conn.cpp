@@ -20,6 +20,7 @@ static constexpr unsigned int nIncomingConnections = 1;
 
 namespace Systray {
 int server_sock;
+int client_sock;
 int create_socket() {
   server_sock = 0;
   struct sockaddr_un local;
@@ -46,8 +47,15 @@ int create_socket() {
   return server_sock;
 }
 
+void send_msg(uint8_t msg) {
+  if (send(client_sock, &msg, sizeof(msg), 0) == -1) {
+    printf("Error sending message\n");
+    return;
+  }
+  std::clog << "message send";
+}
+
 void listen_on_socket() {
-  int client_sock;
   struct sockaddr_un remote;
 
   if (listen(server_sock, nIncomingConnections) != 0) {
@@ -66,8 +74,6 @@ void listen_on_socket() {
 
     std::clog << "systray connected\n";
 
-    // Communication loop
-
     uint8_t msg;
     uint8_t data_recv;
 
@@ -77,10 +83,6 @@ void listen_on_socket() {
       data_recv = recv(client_sock, &msg, sizeof(msg), 0);
 
       if (data_recv > 0) {
-
-        // TODO handle incoming data
-        std::clog << "[INCOMING DATA] " << static_cast<unsigned short>(msg)
-                  << "\n";
 
         switch (msg) {
         case 0:

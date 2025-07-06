@@ -66,7 +66,7 @@ void submit_data(const Glib::RefPtr<Gtk::Builder> &Builder,
   MainWindow::column_view_list_store->append(RowData::create(
       title_entry->get_text(), type_entry->get_text(), release_dateTime,
       specific_time_is_set, notif_switch->get_state()));
-  save_list_store_to_file();
+  save_persistent_to_file();
   close_add_item_dialog(AddItemDialogWindow);
 }
 
@@ -138,6 +138,7 @@ void window_start() {
         return false;
       },
       false);
+  app->add_window(*AddItemDialogWindow);
 
   AddItemDialogWindow->set_visible(true);
 }

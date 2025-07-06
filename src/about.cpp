@@ -5,6 +5,7 @@
 #include "gtkmm/aboutdialog.h"
 #include "gtkmm/builder.h"
 #include "main.hpp"
+#include <fstream>
 #include <glibmm/binding.h>
 #include <gtkmm.h>
 #include <iostream>
@@ -40,7 +41,28 @@ void show_about_window() {
           return false;
         },
         false);
-    about_dialog->set_logo(app_icon);
+    about_dialog->set_logo([]() -> Glib::RefPtr<Gdk::Texture> {
+#ifdef RELEASE
+      GBytes *app_logo_bytes = g_bytes_new_static(resources_img_icon_svg,
+                                                  resources_img_icon_svg_len);
+#else
+      std::ifstream file("resources/img/icon.svg",
+                         std::ios::binary | std::ios::ate);
+      if (!file.is_open()) {
+        return nullptr;
+      }
+
+      size_t file_size = file.tellg();
+      file.seekg(0, std::ios::beg);
+
+      // Allocate memory and read file content
+      gpointer data = g_malloc(file_size);
+      file.read(static_cast<char *>(data), file_size);
+      file.close();
+      GBytes *app_logo_bytes = g_bytes_new_take(data, file_size);
+#endif
+      return Gdk::Texture::create_from_bytes(Glib::wrap(app_logo_bytes));
+    }());
     about_dialog->show();
   }
 }
