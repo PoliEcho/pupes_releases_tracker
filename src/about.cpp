@@ -3,6 +3,7 @@
 #include "glibmm/refptr.h"
 #include "gtkmm/aboutdialog.h"
 #include "gtkmm/builder.h"
+#include <fstream>
 #include <glibmm/binding.h>
 #include <gtkmm.h>
 #include <iostream>
