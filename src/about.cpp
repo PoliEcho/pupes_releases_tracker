@@ -1,11 +1,8 @@
 
 #include "dynamic_src.hpp"
-#include "gdkmm/pixbuf.h"
 #include "glibmm/refptr.h"
 #include "gtkmm/aboutdialog.h"
 #include "gtkmm/builder.h"
-#include "main.hpp"
-#include <fstream>
 #include <glibmm/binding.h>
 #include <gtkmm.h>
 #include <iostream>
