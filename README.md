@@ -23,6 +23,8 @@
 > nlohmann-json  
 > g++ (C++23 compatable)
 
+## Download
+[Latest Release](https://github.com/PoliEcho/pupes_releases_tracker/releases)    
 ## Build  
 ### Install Dependencies  
 #### Arch Linux  
