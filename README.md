@@ -20,7 +20,8 @@
 > GTKmm4  
 > libappindicator3
 > #### Build only  
-> nlohmann-json
+> nlohmann-json  
+> g++ (C++23 compatable)
 
 ## Build  
 ### Install Dependencies  
