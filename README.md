@@ -42,7 +42,7 @@
 ```Bash
 sudo pacman -S --needed gcc gtkmm-4.0 gtk3 libappindicator-gtk3 nlohmann-json
 ```
-#### Ubuntu  
+#### Ubuntu/Kali(building on kali is broken so download the dependencies and download the release)     
 ```Bash
 sudo apt-get update
 sudo apt-get install -y build-essential
