@@ -34,9 +34,6 @@
 > nlohmann-json  
 > g++ (C++23 compatable)
 
-## Download
-[Latest Release](https://github.com/PoliEcho/pupes_releases_tracker/releases)    
-## Build  
 ### Install Dependencies  
 #### Arch Linux  
 ```Bash
@@ -52,7 +49,10 @@ sudo apt-get install -y gcc-13 g++-13
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
 ```
-### Build
+
+## Download
+[Latest Release](https://github.com/PoliEcho/pupes_releases_tracker/releases)    
+## Build  
 ```Bash
 make -j$(nproc)
 ```
