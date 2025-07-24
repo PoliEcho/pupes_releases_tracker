@@ -1,6 +1,24 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Created with Cambalache 0.96.1 -->
 <interface>
+  <menu id="ai_popover_menu_menu">
+                                <item>
+                                  <attribute name="label">Movie</attribute>
+                                  <attribute name="action">app.select-movie</attribute>
+                                </item>
+                                <item>
+                                  <attribute name="label">TV show</attribute>
+                                  <attribute name="action">app.select-tvshow</attribute>
+                                </item>
+                                <item>
+                                  <attribute name="label">Game</attribute>
+                                  <attribute name="action">app.select-game</attribute>
+                                </item>
+                                <item>
+                                  <attribute name="label">Book</attribute>
+                                  <attribute name="action">app.select-book</attribute>
+                                </item>
+                              </menu>
   <!-- interface-name add_item_window.ui -->
   <requires lib="gio" version="2.0"/>
   <requires lib="gtk" version="4.18"/>
@@ -119,26 +137,7 @@
                         <property name="popover">
                           <object class="GtkPopoverMenu" id="ai_popover_menu">
                             <!-- Custom object fragments -->
-                            <property name="menu-model">
-                              <menu id="ai_popover_menu_menu">
-                                <item>
-                                  <attribute name="label">Movie</attribute>
-                                  <attribute name="action">app.select-movie</attribute>
-                                </item>
-                                <item>
-                                  <attribute name="label">TV show</attribute>
-                                  <attribute name="action">app.select-tvshow</attribute>
-                                </item>
-                                <item>
-                                  <attribute name="label">Game</attribute>
-                                  <attribute name="action">app.select-game</attribute>
-                                </item>
-                                <item>
-                                  <attribute name="label">Book</attribute>
-                                  <attribute name="action">app.select-book</attribute>
-                                </item>
-                              </menu>
-                            </property>
+                            <property name="menu-model">ai_popover_menu_menu</property>
                           </object>
                         </property>
                       </object>
