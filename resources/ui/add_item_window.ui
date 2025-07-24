@@ -120,7 +120,7 @@
                           <object class="GtkPopoverMenu" id="ai_popover_menu">
                             <!-- Custom object fragments -->
                             <property name="menu-model">
-                              <menu>
+                              <menu id="ai_popover_menu_menu">
                                 <item>
                                   <attribute name="label">Movie</attribute>
                                   <attribute name="action">app.select-movie</attribute>
