@@ -1,7 +1,7 @@
 CPPC = g++
 MAIN_CFLAGS = `pkg-config --cflags gtkmm-4.0`
 MAIN_LIBS = `pkg-config --libs gtkmm-4.0`
-SYSTRAY_LD_FLAGS = `pkg-config --exists appindicator3-0.1 && echo "\`pkg-config --cflags --libs gtk+-3.0 appindicator3-0.1\`" || echo "\`pkg-config --cflags --libs gtk+-3.0 ayatana-appindicator3-0.1\`"`
+SYSTRAY_LD_FLAGS = `pkg-config --exists appindicator3-0.1 && echo "\`pkg-config --cflags --libs gtk+-3.0 appindicator3-0.1\`" || echo "\`pkg-config --cflags --libs gtk+-3.0 ayatana-appindicator3-0.1\` -DAYATANA"`
 COMMON_CPPC_FLAGS = -std=c++23 -Wall -Wextra -Wno-write-strings -Wno-int-to-pointer-cast
 CPPC_FLAGS = -s -O3 $(COMMON_CPPC_FLAGS) -DRELEASE
 DEBUG_FLAGS = -ggdb $(COMMON_CPPC_FLAGS)

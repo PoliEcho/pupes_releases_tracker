@@ -6,7 +6,11 @@
 #include <filesystem>
 #include <gtk/gtk.h>
 #include <iostream>
+#ifdef AYATANA
+#include <libayatana-appindicator/app-indicator.h>
+#else
 #include <libappindicator/app-indicator.h>
+#endif
 #include <string>
 #include <sys/socket.h>
 #include <sys/un.h>
