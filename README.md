@@ -1,6 +1,17 @@
 <img src="https://github.com/PoliEcho/pupes_releases_tracker/raw/refs/heads/master/resources/img/icon.svg" alt="Project logo" width="128"></img> [![Build Application](https://github.com/PoliEcho/pupes_releases_tracker/actions/workflows/build.yml/badge.svg)](https://github.com/PoliEcho/pupes_releases_tracker/actions/workflows/build.yml)
 # Pupes releases tracker
-#### minimal gtk4(gtkmm4) app writen in C++ for tracking when your favorite stuff comes out 
+#### minimal gtk4(gtkmm4) app writen in C++ for tracking when your favorite stuff comes out  
+> [!IMPORTANT]  
+> this app works only on linux thanks to libappindicator3  
+> i did not try but i think it will not work on wsl  
+
+### Demo  
+<details>
+<summary>Demo</summary>
+
+<video src="https://github.com/user-attachments/assets/97d539da-26fd-4219-a0e4-523c2bb5b370" controls></video>
+
+</details>
 
 ## Goals
 > minimal simple to use UI  
@@ -51,5 +62,4 @@ make -j$(nproc)
 ######       
 well, yes, but not really this can help you separate what you need to do and what you want to do +  
 UNIX filozofy says:   
-"Write programs that do one thing and do it well." - <cite>Peter H. Salus, A Quarter-Century of Unix</cite> 
-
+"Write programs that do one thing and do it well." - <cite>Peter H. Salus, A Quarter-Century of Unix</cite>   
