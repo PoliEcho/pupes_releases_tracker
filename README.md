@@ -1,6 +1,9 @@
 <img src="https://github.com/PoliEcho/pupes_releases_tracker/raw/refs/heads/master/resources/img/icon.svg" alt="Project logo" width="128"></img> [![Build Application](https://github.com/PoliEcho/pupes_releases_tracker/actions/workflows/build.yml/badge.svg)](https://github.com/PoliEcho/pupes_releases_tracker/actions/workflows/build.yml)
 # Pupes releases tracker
-#### minimal gtk4(gtkmm4) app writen in C++ for tracking when your favorite stuff comes out 
+#### minimal gtk4(gtkmm4) app writen in C++ for tracking when your favorite stuff comes out  
+> [!IMPORTANT]  
+> this app works only on linux thanks to libappindicator3  
+> i did not try but i think it will not work on wsl  
 
 ### Demo  
 <details>
