@@ -49,7 +49,8 @@ sudo apt-get install -y gcc-13 g++-13 && \
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
 ```
-#### <span style="color:red;">if the 3. command trows error try libayatana-appindicator3-dev insted of libappindicator3-de</span>
+> [!CAUTION]  
+> <span style="color:red;">if the 3. command trows error try libayatana-appindicator3-dev insted of libappindicator3-de</span>
 
 ## Download
 [Latest Release](https://github.com/PoliEcho/pupes_releases_tracker/releases)    
