@@ -37,7 +37,7 @@
 ### Install Dependencies  
 #### Arch Linux  
 ```Bash
-sudo pacman -S --needed gcc gtkmm-4.0 gtk3 libappindicator-gtk3 nlohmann-json
+sudo pacman -S --needed gcc gtkmm-4.0 gtk3 libayatana-appindicator nlohmann-json
 ```
 #### Ubuntu/Mint/Kali(building on kali is broken so download the dependencies and download the release)     
 ```Bash
