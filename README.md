@@ -29,7 +29,7 @@
 ## Dependencies  
 > GTK3  
 > GTKmm4  
-> libappindicator3
+> libappindicator3/libayatana-appindicator (both should work)
 > #### Build only  
 > nlohmann-json  
 > g++ (C++23 compatable)
