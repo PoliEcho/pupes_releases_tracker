@@ -1,5 +1,5 @@
 <property name="menu-model">
-                             <menu id="ai_popover_menu_menu">
+                             <menu>
                                 <item>
                                   <attribute name="label">Movie</attribute>
 				  <attribute name="action">app.select-movie</attribute>

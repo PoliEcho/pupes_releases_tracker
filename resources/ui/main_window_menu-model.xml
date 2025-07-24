@@ -1,5 +1,5 @@
 <property name="menu-model">
-              <menu id="mw_menubar_menu">
+              <menu>
                 <submenu>
                   <attribute name="label">File</attribute>
                   <section>

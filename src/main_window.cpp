@@ -144,6 +144,7 @@ bool toggle_visibility() {
 
 void start_main_window() {
   Glib::RefPtr<Gtk::Builder> Builder = Gtk::Builder::create();
+  connect_actions();
   try {
 #ifndef RELEASE
     Builder->add_from_file("resources/ui/main_window.ui");
@@ -173,7 +174,6 @@ void start_main_window() {
   inicialize_column_view(column_view);
 
   connect_signals(Builder);
-  connect_actions();
 
   Glib::RefPtr<Gtk::EventControllerKey> key_controller =
       Gtk::EventControllerKey::create();
