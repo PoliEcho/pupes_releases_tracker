@@ -34,15 +34,12 @@
 > nlohmann-json  
 > g++ (C++23 compatable)
 
-## Download
-[Latest Release](https://github.com/PoliEcho/pupes_releases_tracker/releases)    
-## Build  
 ### Install Dependencies  
 #### Arch Linux  
 ```Bash
 sudo pacman -S --needed gcc gtkmm-4.0 gtk3 libappindicator-gtk3 nlohmann-json
 ```
-#### Ubuntu  
+#### Ubuntu/Kali(building on kali is broken so download the dependencies and download the release)     
 ```Bash
 sudo apt-get update
 sudo apt-get install -y build-essential
@@ -52,7 +49,10 @@ sudo apt-get install -y gcc-13 g++-13
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
 ```
-### Build
+
+## Download
+[Latest Release](https://github.com/PoliEcho/pupes_releases_tracker/releases)    
+## Build  
 ```Bash
 make -j$(nproc)
 ```
