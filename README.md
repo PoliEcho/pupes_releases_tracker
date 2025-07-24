@@ -41,14 +41,15 @@ sudo pacman -S --needed gcc gtkmm-4.0 gtk3 libappindicator-gtk3 nlohmann-json
 ```
 #### Ubuntu/Kali(building on kali is broken so download the dependencies and download the release)     
 ```Bash
-sudo apt-get update
-sudo apt-get install -y build-essential
-sudo apt-get install -y libgtk-3-dev libgtkmm-4.0-dev libappindicator3-dev
-sudo apt-get install -y nlohmann-json3-dev
-sudo apt-get install -y gcc-13 g++-13
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+sudo apt-get update && \
+sudo apt-get install -y build-essential && \
+sudo apt-get install -y libgtk-3-dev libgtkmm-4.0-dev libappindicator3-dev && v
+sudo apt-get install -y nlohmann-json3-dev && \
+sudo apt-get install -y gcc-13 g++-13 && \
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
 ```
+#### <span style="color:red;">if the 3. command trows error try libayatana-appindicator3-dev insted of libappindicator3-de</span>
 
 ## Download
 [Latest Release](https://github.com/PoliEcho/pupes_releases_tracker/releases)    
