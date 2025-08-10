@@ -5,14 +5,6 @@
 > this app works only on linux thanks to libappindicator3  
 > i did not try but i think it will not work on wsl  
 
-### Demo  
-<details>
-<summary>Demo</summary>
-
-<video src="https://github.com/user-attachments/assets/97d539da-26fd-4219-a0e4-523c2bb5b370" controls></video>
-
-</details>
-
 ## Goals
 > minimal simple to use UI  
 > small memory and cpu footprint  
